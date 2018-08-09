@@ -256,16 +256,12 @@ public class Board extends JPanel implements ActionListener {
             if (key == KeyEvent.VK_N) {
                 System.exit(0);
             } else if (key == KeyEvent.VK_Y) {
-                EventQueue.invokeLater(() -> {
-                    //JFrame ex = new Snake();
-                    //ex.setVisible(true);
                     inGame = true;
                     leftD = false;
                     rightD = false;
                     upD = false;
                     downD = false;
                     initBoard();
-                    });
             }
         }
     }

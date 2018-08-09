@@ -1,6 +1,5 @@
 package files;
 
-import java.awt.EventQueue;
 import javax.swing.*;
 
 public class Snake extends JFrame {
@@ -22,9 +21,7 @@ public class Snake extends JFrame {
     }
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
             JFrame ex = new Snake();
             ex.setVisible(true);
-        });
     }
 }
