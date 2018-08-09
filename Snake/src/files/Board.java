@@ -20,7 +20,7 @@ public class Board extends JPanel implements ActionListener {
     private final int x[] = new int[ALL_DOTS];
     private final int y[] = new int[ALL_DOTS];
 
-    private int dots, apple_x, apple_y, score = 0;
+    private int dots, apple_x, apple_y, wall_x = 0, wall_y = 100, score = 0;
 
     private boolean leftD = false;
     private boolean rightD = false;
@@ -36,7 +36,7 @@ public class Board extends JPanel implements ActionListener {
         initBoard();
     }
 
-    private void initBoard() {
+    public void initBoard() {
 
         addKeyListener(new TAdapter());
         setBackground(Color.black);
@@ -179,7 +179,7 @@ public class Board extends JPanel implements ActionListener {
         }
 
         for (int z = 0; z < 20; z++) {
-            if ((x[0] == x[100+z] && y[0] == y[100]) || (x[0] == x[20] && y[0] == y[100+z])) {
+            if ((x[0] == wall_x+z && y[0] == wall_y) || (x[0] == 20 && y[0] == wall_y+z)) {
                 inGame = false;
             }
         }
@@ -257,9 +257,15 @@ public class Board extends JPanel implements ActionListener {
                 System.exit(0);
             } else if (key == KeyEvent.VK_Y) {
                 EventQueue.invokeLater(() -> {
-                    JFrame ex = new Snake();
-                    ex.setVisible(true);
-                });
+                    //JFrame ex = new Snake();
+                    //ex.setVisible(true);
+                    inGame = true;
+                    leftD = false;
+                    rightD = false;
+                    upD = false;
+                    downD = false;
+                    initBoard();
+                    });
             }
         }
     }
