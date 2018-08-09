@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 import javax.swing.*;
 
 public class Board extends JPanel implements ActionListener {
@@ -26,9 +27,10 @@ public class Board extends JPanel implements ActionListener {
     private boolean upD = false;
     private boolean downD = false;
     private boolean inGame = true;
+    private boolean specialAp = false;
 
     private Timer timer;
-    private Image ball, apple, head, wall;
+    private Image ball, apple, spapple, head, wall;
 
     public Board() {
         initBoard();
@@ -52,6 +54,9 @@ public class Board extends JPanel implements ActionListener {
 
         ImageIcon iia = new ImageIcon("src/resources/apple.png");
         apple = iia.getImage();
+
+        ImageIcon iisa = new ImageIcon("src/resources/specialapple.png");
+        spapple = iisa.getImage();
 
         ImageIcon iih = new ImageIcon("src/resources/head.png");
         head = iih.getImage();
@@ -80,7 +85,12 @@ public class Board extends JPanel implements ActionListener {
 
     private void doDrawing(Graphics g) {
         if (inGame) {
-            g.drawImage(apple, apple_x, apple_y, this);
+            if (specialAp) {
+                g.drawImage(spapple, apple_x, apple_y, this); //placeholder for double apple drawing
+            } else {
+                g.drawImage(apple, apple_x, apple_y, this);
+
+            }
             for (int x = 0; x < 20; x++) {
                 g.drawImage(wall, 0+x, 100, this);
             }
@@ -125,8 +135,17 @@ public class Board extends JPanel implements ActionListener {
 
     private void checkApple() {
         if ((x[0] == apple_x) && (y[0] == apple_y)) {
-            dots++;
-            score++;
+            if (specialAp) {
+                dots *= 2;
+                if (score == 0) {
+                    score++;
+                }
+                score *= 2;
+            } else {
+                dots++;
+                score++;
+            }
+            specialAp = false;
             locateApple();
         }
     }
@@ -166,11 +185,7 @@ public class Board extends JPanel implements ActionListener {
         }
 
 
-       /* for (int x = 0; x < 20; x++) {
-            g.drawImage(wall, 0+x, 100, this);
-        }
-        for (int x = 0; x < 30; x++) {
-            g.drawImage(wall, 20, 100+x, this);*/
+
         if (y[0] >= B_HEIGHT || y[0] < 0) {
             inGame = false;
         }
@@ -183,6 +198,11 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private void locateApple() {
+        Random a = new Random();
+        int b = a.nextInt(100);
+        if (b > 89) {
+            specialAp = true;
+        }
         int r = (int) (Math.random() * RAND_POS);
         apple_x = ((r * DOT_SIZE));
         r = (int) (Math.random() * RAND_POS);
